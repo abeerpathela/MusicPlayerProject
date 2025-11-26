@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/2742de5c14.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+       <div class="musicPlayer">
+            <nav class="navigationBar">
+                <div class="circle">
+                    <i class="fa-solid fa-angle-left"></i>
+                </div>
+                <div class="circle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </nav>
+            <div class="songThumbnail">
+                <img src="thumbnail.jpeg" alt="thumbnail" class="thumbnailImage">
+                <h1 class="songName">Despacito</h1>
+                <p class="songTitle">Luis Fonsi Ft. Puerto Rican</p>
+            </div>
+            <div class="audioControls" id="song">
+                <audio>
+                    <source src="audio.mp3">
+                </audio>
+                <input type="range" value="0" id="progress">
+            </div>
+            <div class="controls">
+                <div class="circle"><i class="fa-solid fa-backward"></i></div>
+                <div class="circle_2 playPauseButton"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
+                <div class="circle"><i class="fa-solid fa-forward"></i></div>
+            </div>
+       </div>
+    </div>
+    <script>
+        
+        let progress=document.querySelector("#progress");
+        let playPauseButton=document.querySelector(".playPauseButton");
+        let song=document.querySelector("#song audio");
+        let ctrlIcon=document.querySelector("#ctrlIcon");
+
+       
+
+        song.onloadedmetadata=function(){
+            progress.max=song.duration;
+            progress.value=song.currentTime;
+        }
+
+        function playPause(){
+            if(ctrlIcon.classList.contains("fa-pause")){
+                ctrlIcon.classList.remove("fa-pause");
+                ctrlIcon.classList.add("fa-play");
+                song.pause();
+            }
+            else{
+                ctrlIcon.classList.remove("fa-play");
+                ctrlIcon.classList.add("fa-pause");  
+                song.play();
+            }
+        }
+
+        playPauseButton.addEventListener('click',playPause);
+        document.addEventListener('keydown',(event)=>{
+            let key=event.key;
+            if(key===" "){
+                event.preventDefault();
+                playPause();
+            }
+        })
+
+        if(song.play()){
+            setInterval(()=>{
+                progress.value=song.currentTime;
+
+            },500);
+        }
+
+        progress.onchange = function(){
+            song.play();
+            song.currentTime=progress.value;
+            ctrlIcon.classList.remove("fa-play");
+            ctrlIcon.classList.add("fa-pause"); 
+        }
+
+    </script>
+</body>
+</html>
